@@ -18,7 +18,7 @@ const page = () => {
     <div>
       Hello World!
       <h1>{name} {time}</h1>
-      <button onClick={clickHandler}>Change name</button>
+      <button onClick={() => clickHandler()}>Change name</button>
       {/* <p>{time}</p> */}
     </div>
   );
