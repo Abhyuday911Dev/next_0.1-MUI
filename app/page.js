@@ -10,17 +10,9 @@ const page = () => {
     name === "john doe" ? setName("not john doe") : setName("john doe");
   };
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+  setInterval(() => {
+    setTime(new Date().toLocaleTimeString())
+  },1000)
 
   return (
     <div>
