@@ -1,25 +1,99 @@
 "use client";
 
+import {
+  Button,
+  Checkbox,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  Input,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const page = () => {
-  const [name, setName] = useState("john doe");
-  const [time, setTime] = useState(null);
+  const [name, setName] = useState("");
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    const { username } = event.target;
-    setName(username.value);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const [userName] = e.target;
+    console.log(userName.value);
   };
 
   return (
-    <div>
-      <h1>Name: {name}</h1>
-      <form onSubmit={submitHandler}>
-        <input type="text" name="username" />
-        <button>Submit</button>
+    <Container maxWidth={"sm"} sx={{pt:10}}>
+      <form noValidate>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoComplete="fname"
+              name="firstName"
+              variant="outlined"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              autoFocus
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              autoComplete="lname"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox value="allowExtraEmails" color="primary" />}
+              label="I want to receive inspiration, marketing promotions and updates via email."
+            />
+          </Grid>
+        </Grid>
+        <Button type="submit" fullWidth variant="contained" color="primary" size="large">
+          Sign Up
+        </Button>
+        <Grid container justify="flex-end">
+          <Grid item sx={{mt: 5}}>
+            <Link href="#" variant="body2"  >
+              Already have an account? Sign in
+            </Link>
+          </Grid>
+        </Grid>
       </form>
-    </div>
+    </Container>
   );
 };
 
