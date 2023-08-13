@@ -6,15 +6,19 @@ import {
   CssBaseline,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
   Select,
   TextField,
   ThemeProvider,
+  Tooltip,
+  Typography,
   createTheme,
 } from "@mui/material";
-import Link from "next/link";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import ResponsiveAppBar from "@/components/ResponsiveAppBar";
@@ -26,27 +30,110 @@ const darkTheme = createTheme({
 });
 
 const page = () => {
-  const [name, setName] = useState("");
   const [title, setTitle] = useState("");
-  const [age, setAge] = useState(10);
+  const [description, setDescription] = useState("due");
   const [details, setdetails] = useState("");
+
+  const [tasks, setTasks] = useState([
+    {
+      title: "Dine out",
+      details: "Find if any restrurant serves that potato dish",
+      description: "Pending",
+      date: new Date().toLocaleDateString(),
+    },
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (!title.length && !description.length && !details.length) {
+      toast.error("Inko to aata hi nahi hai!  🎙️", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+
     const data = {
       title,
-      age,
+      description,
       details,
       date: new Date().toLocaleDateString(),
     };
-    console.log(data);
+
+    setTasks((tasks) => [...tasks, data]);
+    setTitle("");
+    setdetails("");
+    setDescription("due");
+
+    toast.success("Task added ✅", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
+
+  const handleDelete = (id) => {
+    setTasks(tasks.filter((elem, idx) => idx !== id));
+  };
+
+  const renderTasks = tasks.map((elem, idx) => {
+    return (
+      <Grid item md={6} xs={12} key={idx}>
+        <Paper elevation={4} sx={{ p: 2 }}>
+          <Typography variant="h5" component="h2">
+            {elem.title}
+          </Typography>
+          <Typography variant="h7" component="h5">
+            {elem.details}
+          </Typography>
+          <Typography variant="h7" component="h5">
+            {elem.description}
+          </Typography>
+          <Grid container spacing={2} justifyContent={"flex-end"}>
+            <Grid item>
+              <Tooltip title="edit">
+                <IconButton>
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+            <Grid item>
+              <Tooltip title="Delete" onClick={() => handleDelete(idx)}>
+                <IconButton>
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+    );
+  });
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Container maxWidth={"lg"} sx={{ pt: 12 }}>
-        <Paper sx={{ p: 4 }}>
+      <ResponsiveAppBar />
+      <Container maxWidth={"xl"} sx={{ mt: 3.5, pb: 5 }}>
+        <Paper sx={{ p: 4, py: 3 }}>
+          <Typography variant="h3" component={"h2"}>
+            Add Tasks
+          </Typography>
+        </Paper>
+
+        <Paper sx={{ p: 4, pt: 0, mb: 5 }}>
           <form noValidate onSubmit={submitHandler}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -74,63 +161,51 @@ const page = () => {
                   rows={10}
                   id="title"
                   label="Task Title"
-                  autoFocus
+                  // autoFocus
                   value={details}
                   onChange={(e) => setdetails(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
-                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                <Select
-                  name="Status"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={age}
-                  label="Age"
-                  onChange={(e) => setAge(e.target.value)}
-                  fullWidth
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select> */}
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Description
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
-                    label="Age"
-                    // onChange={handleChange}
+                    value={description}
+                    label="Description"
+                    onChange={(e) => setDescription(e.target.value)}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={"due"}>Due</MenuItem>
+                    <MenuItem value={"pending"}>Pending</MenuItem>
+                    <MenuItem value={"completed"}>Completed</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
-              <Grid item xs={12}>
+              <Grid item xs={12} mt={2}>
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
                   size="large"
-                  
+                  sx={{ p: 2 }}
                 >
-                  Sign Up
+                  Add Task
                 </Button>
               </Grid>
             </Grid>
           </form>
+        </Paper>
+        <Paper sx={{ p: 4, pt: 4, pb: 1 }}>
+          <Typography variant="h4" component={"h2"} mb={3}>
+            Your Tasks
+          </Typography>
+          <Grid container spacing={2} mb={4}>
+            {renderTasks}
+          </Grid>
         </Paper>
       </Container>
     </ThemeProvider>
