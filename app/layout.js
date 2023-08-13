@@ -1,6 +1,5 @@
-// import { Inter } from 'next/font/google'
-
-// const inter = Inter({ subsets: ['latin'] })
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata = {
   title: 'Create Next App Abhyuday',
@@ -9,8 +8,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" >
-      <body suppressHydrationWarning>{children}</body>
+    <html lang="en">
+      <body suppressHydrationWarning>
+        {children}
+        <ToastContainer />
+      </body>
     </html>
   )
 }

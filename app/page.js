@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import ResponsiveAppBar from "@/components/ResponsiveAppBar";
 
 const darkTheme = createTheme({
   palette: {
