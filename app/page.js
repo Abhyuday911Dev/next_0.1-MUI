@@ -127,13 +127,10 @@ const page = () => {
       <CssBaseline />
       <ResponsiveAppBar />
       <Container maxWidth={"xl"} sx={{ mt: 3.5, pb: 5 }}>
-        <Paper sx={{ p: 4, py: 3 }}>
-          <Typography variant="h3" component={"h2"}>
+        <Paper sx={{ p: 4, pt: 0, mb: 5 }}>
+          <Typography sx={{ py: 3 }} variant="h3" component={"h2"}>
             Add Tasks
           </Typography>
-        </Paper>
-
-        <Paper sx={{ p: 4, pt: 0, mb: 5 }}>
           <form noValidate onSubmit={submitHandler}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -158,7 +155,8 @@ const page = () => {
                   required
                   fullWidth
                   multiline
-                  rows={10}
+                  minRows = {15}
+                  // rows={10}
                   id="title"
                   label="Task Title"
                   // autoFocus
